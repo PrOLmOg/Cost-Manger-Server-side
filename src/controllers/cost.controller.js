@@ -56,8 +56,8 @@ const getMonthlyReport = async (req, res) => {
         $match: {
           userid: uid,
           createdAt: {
-            $gte: new Date(`${year}-${month}-01T00:00:00.000Z`),
-            $lt: new Date(`${year}-${month}-31T23:59:59.999Z`),
+            $gte: new Date(`${year}-${mm}-01T00:00:00.000Z`),
+            $lt:  new Date(`${year}-${mm}-31T23:59:59.999Z`),
           },
         },
       },
