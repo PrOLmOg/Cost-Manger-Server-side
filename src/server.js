@@ -7,12 +7,12 @@ const express = require('express');
 const morgan  = require('morgan');
 const { config } = require('dotenv');
 
-const userRouter  = require('./src/routes/user.router');
-const costRouter  = require('./src/routes/cost.router');
-const aboutRouter = require('./src/routes/about.router');
+const userRouter  = require('./routes/user.router');
+const costRouter  = require('./routes/cost.router');
+const aboutRouter = require('./routes/about.router');
 
-const connectDB   = require('./src/config/database.config');
-const { errorHandler } = require('./src/middleware/error.middleware');
+const connectDB   = require('./config/database.config');
+const { errorHandler } = require('./middleware/error.middleware');
 
 // --------------------
 // Environment & app
