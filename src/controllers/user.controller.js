@@ -3,6 +3,10 @@ import { User } from '../models/user.js';
 
 /**
  * Retrieves all users
+ * @category Controller
+ * @param {import('express').Request}  req  Express request object
+ * @param {import('express').Response} res  Express response object
+ * @returns {Promise<void>} 201 JSON on success or 400/500 JSON on error
  */
 const getUsers = async (req, res) => {
   try {
@@ -14,7 +18,12 @@ const getUsers = async (req, res) => {
 };
 
 /**
- * Creates a new user
+ * Creates a new user document.
+ *
+ * @category Controller
+ * @param {import('express').Request}  req  Express request object
+ * @param {import('express').Response} res  Express response object
+ * @returns {Promise<void>} 201 JSON on success or 400/500 JSON on error
  */
 const createUser = async (req, res) => {
   try {
