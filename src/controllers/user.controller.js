@@ -72,4 +72,4 @@ export const getUserDetails = async (req, res) => {
   }
 };
 
-export { getUsers, createUser, getUserDetails };
+export { getUsers, createUser };
