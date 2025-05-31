@@ -11,7 +11,7 @@ const userRouter  = require('./routes/user.router').default;
 const costRouter  = require('./routes/cost.router').default;
 const aboutRouter = require('./routes/about.router').default;
 
-const connectDB   = require('./config/database.config');
+const connectDB   = require('./config/database.config').default;
 const { errorHandler } = require('./middleware/error.middleware');
 
 // --------------------
