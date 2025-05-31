@@ -43,7 +43,7 @@ const addCost = async (req, res) => {
  * Generates a monthly cost report for a given user
  */
 const getMonthlyReport = async (_req, res) => {
-  const { id, user_id, year, month } = req.query;
+  const { id, user_id, year, month } = _req.query;
   const mm = month.toString().padStart(2, '0');
   const uid = id ?? user_id;
   if (!uid || !year || !month) {
