@@ -37,6 +37,7 @@ app.use('/api/about', aboutRouter);
 
 const { addCost } = require('./controllers/cost.controller').default;
 app.post('/api/add', addCost);
+app.get('/api/report', getMonthlyReport);
 
 // ---------------------------
 // Start HTTP server & export
