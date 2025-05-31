@@ -7,9 +7,9 @@ const express = require('express');
 const morgan  = require('morgan');
 const { config } = require('dotenv');
 
-const userRouter  = require('./routes/user.router');
-const costRouter  = require('./routes/cost.router');
-const aboutRouter = require('./routes/about.router');
+const userRouter  = require('./routes/user.router').default;
+const costRouter  = require('./routes/cost.router').default;
+const aboutRouter = require('./routes/about.router').default;
 
 const connectDB   = require('./config/database.config');
 const { errorHandler } = require('./middleware/error.middleware');
