@@ -44,6 +44,7 @@ const addCost = async (req, res) => {
  */
 const getMonthlyReport = async (req, res) => {
   const { id, user_id, year, month } = req.query;
+  const mm = month.toString().padStart(2, '0');
   const uid = id ?? user_id;
   if (!uid || !year || !month) {
     return res.status(400).json({ error: "Please provide id, year, and month." });
