@@ -21,8 +21,7 @@ const createUser = async (req, res) => {
     const { first_name, last_name, birthday, marital_status } = req.body;
     if (!first_name || !last_name || !birthday || !marital_status) {
       return res.status(400).json({
-        message:
-          'All fields are required: first_name, last_name, birthday, marital_status.',
+        message: 'All fields are required: first_name, last_name, birthday, marital_status.',
       });
     }
 
@@ -44,20 +43,20 @@ export const getUserDetails = async (req, res) => {
     const user = await User.findOne({ id: req.params.id });
 
     if (!user) {
-      return res.status(404).json({ message: "User not found" });
+      return res.status(404).json({ message: 'User not found' });
     }
 
     // Calculate total cost for the user
     const totalCost = await Cost.aggregate([
       { $match: { userid: req.params.id } },
-      { $group: { _id: null, total: { $sum: "$sum" } } }
+      { $group: { _id: null, total: { $sum: '$sum' } } },
     ]);
 
     res.json({
       first_name: user.first_name,
       last_name: user.last_name,
       id: user.id,
-      total: totalCost.length > 0 ? totalCost[0].total : 0
+      total: totalCost.length > 0 ? totalCost[0].total : 0,
     });
   } catch (error) {
     res.status(500).json({ message: 'Server error: ' + error.message });
