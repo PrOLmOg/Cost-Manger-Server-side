@@ -4,8 +4,8 @@
     "description": "My Node.js + MongoDB project",
     "main": "server.js",
     "scripts": {
-        "start": "node server.js",
-        "dev": "nodemon server.js",
+        "start": "node src/server.js",
+        "dev": "nodemon src/server.js",
         "seed": "node scripts/seed.js",
         "test": "npm run seed && jest --runInBand",
         "format": "prettier --write \"src/**/*.{ts,js}\""
