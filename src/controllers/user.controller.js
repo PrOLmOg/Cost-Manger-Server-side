@@ -45,7 +45,15 @@ const createUser = async (req, res) => {
 };
 
 /**
- * Retrieves details of a specific user, including total cost
+ * Retrieve a single user and his ∑ of costs.
+ *
+ * Path param `:id` – user’s ID in the `users` collection
+ *
+ * @category Controller
+ * @param {import('express').Request}  req  Express request
+ * @param {import('express').Response} res  Express response
+ * @returns {Promise<void>} 200 JSON with first_name, last_name, id, total
+ *                          404 if user not found · 500 on server error
  */
 export const getUserDetails = async (req, res) => {
   try {

@@ -1,5 +1,10 @@
 /**
- * Controller function to retrieve team details
+ * Returns the fixed list of team members.
+ *
+ * @category Controller
+ * @param {import('express').Request}  _req - Express request (unused)
+ * @param {import('express').Response} res  - Express response
+ * @returns {Promise<void>} Sends JSON array or 500 on error
  */
 export const getAbout = async (_req, res) => {
   try {

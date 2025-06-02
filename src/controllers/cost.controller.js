@@ -1,7 +1,12 @@
 import { Cost } from '../models/cost.js';
 
 /**
- * Retrieves all cost entries
+ * Return **all** cost documents.
+ *
+ * @category Controller
+ * @param {import('express').Request}  _req  Express request (unused)
+ * @param {import('express').Response} res   Express response
+ * @returns {Promise<void>} Sends JSON array or 500 on error
  */
 const getCosts = async (req, res) => {
   try {
@@ -13,7 +18,14 @@ const getCosts = async (req, res) => {
 };
 
 /**
- * Adds a new cost entry
+ * Create a new cost item.
+ *
+ * Body params  `description, category, userid|user_id, sum [, createdAt]`
+ *
+ * @category Controller
+ * @param {import('express').Request}  req  Express request
+ * @param {import('express').Response} res  Express response
+ * @returns {Promise<void>} 201 with the new document or 400/500 JSON on error
  */
 const addCost = async (req, res) => {
   try {
@@ -40,7 +52,14 @@ const addCost = async (req, res) => {
 };
 
 /**
- * Generates a monthly cost report for a given user
+ * Monthly report for one user, grouped by category.
+ *
+ * Query params  `id|user_id, year, month`  (month 1-12 accepted)
+ *
+ * @category Controller
+ * @param {import('express').Request}  req  Express request
+ * @param {import('express').Response} res  Express response
+ * @returns {Promise<void>} 200 JSON report or 400/500 JSON on error
  */
 const getMonthlyReport = async (_req, res) => {
   const { id, user_id, year, month } = _req.query;
