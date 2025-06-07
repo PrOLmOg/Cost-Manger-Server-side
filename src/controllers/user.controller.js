@@ -10,6 +10,7 @@ import { User } from '../models/user.js';
  */
 const getUsers = async (req, res) => {
   try {
+    // No filter – return the whole collection
     const users = await User.find();
     res.json(users);
   } catch (error) {
@@ -27,6 +28,7 @@ const getUsers = async (req, res) => {
  */
 const createUser = async (req, res) => {
   try {
+    // Validate body
     const { first_name, last_name, birthday, marital_status } = req.body;
     if (!first_name || !last_name || !birthday || !marital_status) {
       return res.status(400).json({
@@ -34,6 +36,7 @@ const createUser = async (req, res) => {
       });
     }
 
+    // Persist
     const created = new User(req.body);
     console.log('created', created);
 
@@ -57,18 +60,20 @@ const createUser = async (req, res) => {
  */
 export const getUserDetails = async (req, res) => {
   try {
+    // Fetch user ------------------------------------------------
     const user = await User.findOne({ id: req.params.id });
 
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
 
-    // Calculate total cost for the user
+    // Calculate total cost for the user ---------------------------------------
     const totalCost = await Cost.aggregate([
       { $match: { userid: req.params.id } },
       { $group: { _id: null, total: { $sum: '$sum' } } },
     ]);
 
+    //Respond --------------------------------------------------
     res.json({
       first_name: user.first_name,
       last_name: user.last_name,

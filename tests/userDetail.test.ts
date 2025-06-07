@@ -1,6 +1,7 @@
 import request from 'supertest';
 import { app } from '../src/server';
 
+/* Seed two expenses for the target user */
 beforeAll(async () => {
   const { Cost } = await import('../src/models/cost.js');
   await Cost.deleteMany({});
@@ -10,6 +11,9 @@ beforeAll(async () => {
   ]);
 });
 
+/* -------------------------------------------------------------- */
+/*  /api/users/:id should return total = 208 (8 + 200)            */
+/* -------------------------------------------------------------- */
 describe('GET /api/users/:id', () => {
   it('returns 200 and correct total', async () => {
     const res = await request(app).get('/api/users/123123');

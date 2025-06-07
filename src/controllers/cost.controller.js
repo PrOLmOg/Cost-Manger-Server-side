@@ -10,6 +10,7 @@ import { Cost } from '../models/cost.js';
  */
 const getCosts = async (req, res) => {
   try {
+    // Fetch every document
     const costs = await Cost.find();
     res.json(costs);
   } catch (_error) {
@@ -20,7 +21,7 @@ const getCosts = async (req, res) => {
 /**
  * Create a new cost item.
  *
- * Body params  `description, category, userid|user_id, sum [, createdAt]`
+ * Body params  `description, category, userid, sum [, createdAt]`
  *
  * @category Controller
  * @param {import('express').Request}  req  Express request
@@ -29,17 +30,18 @@ const getCosts = async (req, res) => {
  */
 const addCost = async (req, res) => {
   try {
-    let { description, category, userid, user_id, sum, createdAt } = req.body;
-    const uid = userid ?? user_id;
+    // Field extraction & validation
+    const { description, category, userid, sum, createdAt } = req.body;
 
-    if (!description || !category || !uid || sum === undefined) {
+    if (!description || !category || !userid || sum === undefined) {
       return res.status(400).json({ message: 'All fields are required.' });
     }
 
+    // Build the Mongoose doc
     const newCost = new Cost({
       description,
       category,
-      userid: uid,
+      userid,
       sum,
       createdAt: createdAt ? new Date(createdAt) : new Date(), // Default to current date if not provided
     });
@@ -54,7 +56,7 @@ const addCost = async (req, res) => {
 /**
  * Monthly report for one user, grouped by category.
  *
- * Query params  `id|user_id, year, month`  (month 1-12 accepted)
+ * Query params  `id, year, month`  (month 1-12 accepted)
  *
  * @category Controller
  * @param {import('express').Request}  req  Express request
@@ -62,18 +64,19 @@ const addCost = async (req, res) => {
  * @returns {Promise<void>} 200 JSON report or 400/500 JSON on error
  */
 const getMonthlyReport = async (_req, res) => {
-  const { id, user_id, year, month } = _req.query;
+  const { id, year, month } = _req.query;
   const mm = month.toString().padStart(2, '0');
-  const uid = id ?? user_id;
-  if (!uid || !year || !month) {
+
+  if (!id || !year || !month) {
     return res.status(400).json({ error: 'Please provide id, year, and month.' });
   }
 
   try {
     const costs = await Cost.aggregate([
       {
+        // match by user & month boundaries
         $match: {
-          userid: uid,
+          userid: id,
           createdAt: {
             $gte: new Date(`${year}-${mm}-01T00:00:00.000Z`),
             $lt: new Date(`${year}-${mm}-31T23:59:59.999Z`),
@@ -81,6 +84,7 @@ const getMonthlyReport = async (_req, res) => {
         },
       },
       {
+        // group items by category → build array per bucket
         $group: {
           _id: '$category',
           costs: {
@@ -94,6 +98,7 @@ const getMonthlyReport = async (_req, res) => {
       },
     ]);
 
+    // Ensure empty categories exist
     const categories = ['food', 'health', 'housing', 'sport', 'education'];
     const report = {};
 
@@ -105,8 +110,9 @@ const getMonthlyReport = async (_req, res) => {
       report[cost._id] = cost.costs;
     });
 
+    // Send final payload
     return res.json({
-      userid: uid,
+      userid: id,
       year,
       month,
       costs: Object.entries(report).map(([category, items]) => ({

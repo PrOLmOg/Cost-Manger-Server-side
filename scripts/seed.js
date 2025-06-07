@@ -26,9 +26,9 @@ async function seed() {
       marital_status: 'single',
     });
 
-    console.log('✅ Database seeded with user 123123');
+    console.log(' Database seeded with user 123123');
   } catch (err) {
-    console.error('❌ Seed failed:', err.message);
+    console.error(' Seed failed:', err.message);
   } finally {
     await mongoose.disconnect();
   }
