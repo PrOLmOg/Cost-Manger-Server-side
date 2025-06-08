@@ -8,7 +8,7 @@ import { Cost } from '../models/cost.js';
  * @param {import('express').Response} res   Express response
  * @returns {Promise<void>} Sends JSON array or 500 on error
  */
-const getCosts = async (req, res) => {
+const getCosts = async (_req, res) => {
   try {
     // Fetch every document
     const costs = await Cost.find();
@@ -65,11 +65,17 @@ const addCost = async (req, res) => {
  */
 const getMonthlyReport = async (_req, res) => {
   const { id, year, month } = _req.query;
-  const mm = month.toString().padStart(2, '0');
 
+  // ---------- validation ----------
   if (!id || !year || !month) {
-    return res.status(400).json({ error: 'Please provide id, year, and month.' });
+    return res.status(400).json({ error: 'id, year and month are required' });
   }
+  const monthNum = Number(month);               // coerce & validate
+  if ( Number.isNaN(monthNum) || monthNum < 1 || monthNum > 12 ) {
+    return res.status(400).json({ error: 'month must be 1-12' });
+  }
+
+  const mm = String(monthNum).padStart(2, '0'); // safe two-digit string
 
   try {
     const costs = await Cost.aggregate([
@@ -112,7 +118,7 @@ const getMonthlyReport = async (_req, res) => {
 
     // Send final payload
     return res.json({
-      userid: id,
+      userid: id, // field in DB is “userid”, query param is “id”
       year,
       month,
       costs: Object.entries(report).map(([category, items]) => ({

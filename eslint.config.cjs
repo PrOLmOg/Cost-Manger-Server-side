@@ -24,6 +24,7 @@ module.exports = [
 
       /* TS overrides */
       '@typescript-eslint/no-explicit-any': 'off',
+      '@typescript-eslint/strict-boolean-expressions': 'warn',
 
       /* JSDoc */
       'jsdoc/require-jsdoc': ['warn', { publicOnly: true }],
